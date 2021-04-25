@@ -91,13 +91,13 @@ class ResNetUNet(nn.Module):
 
 		return out
 
-	def load(self, PATH='checkpoint.pth'):
+	def load(self, PATH='checkpoint_overfit.pth'):
 		try:
 			self.load_state_dict(torch.load(PATH))
 		except FileNotFoundError:
 			print('Error while trying to load model. No file found for', PATH)
 
-	def save(self, PATH='checkpoint.pth'):
+	def save(self, PATH='checkpoint_overfit.pth'):
 		torch.save(self.state_dict(), PATH)
 
 
@@ -178,7 +178,7 @@ def dice_loss(pred, target, smooth = 1.):
 def calc_loss(pred, target, metrics, bce_weight=0.5):
     bce = F.binary_cross_entropy_with_logits(pred.double(), target.double())
 
-    pred = F.sigmoid(pred.double())
+    pred = torch.sigmoid(pred.double())
     dice = dice_loss(pred.double(), target.double())
 
     loss = bce * bce_weight + dice * (1 - bce_weight)

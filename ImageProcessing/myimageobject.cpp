@@ -1,0 +1,2 @@
+#include "myimageobject.h"
+
